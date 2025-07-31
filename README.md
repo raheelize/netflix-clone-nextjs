@@ -48,8 +48,8 @@ A full-featured **Netflix Clone** built using **Next.js**, **TMDB APIs**, and **
 ### ⚙️ Getting Started
 
 ```bash
-git clone https://github.com/your-username/netflix-clone.git
-cd netflix-clone
+git clone https://github.com/raheelize/netflix-clone-nextjs.git
+cd netflix-clone-nextjs
 npm install
 npm run dev
 ```
@@ -67,10 +67,11 @@ NEXT_PUBLIC_FIREBASE_API_KEY=your_firebase_key
 ### 📂 Folder Structure
 
 ```
-/app               # Next.js App Router pages
-/components        # Reusable UI components
-/hooks             # Custom React hooks
-/lib               # Utility functions, API configs
+/src
+    /app               # Next.js App Router pages
+    /components        # Reusable UI components
+    /pages             # Utility API settings
+    /lib               # Conf
 /assets/screenshots# Screenshots for documentation
 ```
 
