@@ -1,36 +1,89 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## 📺 Netflix Clone App
 
-## Getting Started
+A full-featured **Netflix Clone** built using **Next.js**, **TMDB APIs**, and **modern UI/UX**. Users can browse movies & TV shows, add them to **Favourites** or **My List**, and enjoy secure **user-based authentication** with search functionality.
 
-First, run the development server:
+---
+
+### 🚀 Features
+
+* 🔒 **User Authentication** (Login/Signup)
+* 🎮 **Browse Movies and TV Shows**
+* 📌 **Add to Favourites & My List**
+* 🔍 **Search Movies / Series**
+* 📱 **Responsive Design**
+* 🧠 Powered by **The Movie Database (TMDB)** API
+
+---
+
+### 🖼️ Screenshots
+
+#### 🏠 Home Page
+
+![Home](assets/screenshots/home.png)
+
+#### 🎥 Movie Info Modal
+
+![Movie Info](assets/screenshots/overview.png)
+
+#### 🔍 Search Interface
+
+![Search](assets/screenshots/search.png)
+
+#### 🔐 Login Page
+
+![Login](assets/screenshots/login.png)
+
+---
+
+### ⚙️ Tech Stack
+
+* **Next.js 13+ (App Router)**
+* **Tailwind CSS**
+* **TMDB API**
+* **Firebase / Supabase (for Auth)**
+* **React Hooks**
+
+---
+
+### ⚙️ Getting Started
 
 ```bash
+git clone https://github.com/your-username/netflix-clone.git
+cd netflix-clone
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Create a `.env.local` file with your TMDB API Key and Auth config:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```env
+NEXT_PUBLIC_TMDB_API_KEY=your_tmdb_key_here
+NEXT_PUBLIC_FIREBASE_API_KEY=your_firebase_key
+# or your auth provider keys
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+### 📂 Folder Structure
 
-To learn more about Next.js, take a look at the following resources:
+```
+/app               # Next.js App Router pages
+/components        # Reusable UI components
+/hooks             # Custom React hooks
+/lib               # Utility functions, API configs
+/assets/screenshots# Screenshots for documentation
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 🙌 Credits
 
-## Deploy on Vercel
+* [TMDB API](https://www.themoviedb.org/documentation/api)
+* [Next.js](https://nextjs.org/)
+* [Tailwind CSS](https://tailwindcss.com/)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 📢 Feedback & Contributions
+
+Pull requests are welcome! If you find bugs or want to suggest improvements, feel free to open an issue or contribute.

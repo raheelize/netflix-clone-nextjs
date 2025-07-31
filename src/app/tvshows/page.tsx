@@ -3,28 +3,28 @@ import React, { useEffect, useState, useRef } from 'react';
 import { Search, Play, Plus, Check, Star, LogOut, User, Heart, Bookmark, Menu, X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useScroll, useDrag } from 'react-use-gesture';
 import { animated } from '@react-spring/web';
-import { MovieCard, useMovieModal } from './_components';
+import { MovieCard, useMovieModal } from '../_components';
 import { useSession, signOut } from 'next-auth/react';
-import { Navigation } from './Navigation';
+import { Navigation } from '../Navigation';
 
 
 const API_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY || 'demo_key';
 
 const ENDPOINTS = {
-  nowPlaying: `https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=2&sort_by=popularity.desc&api_key=${API_KEY}`,
-  topRated: `https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=3&sort_by=vote_average.desc&without_genres=99,10755&vote_count.gte=200&api_key=${API_KEY}`,
-  popular: `https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=2&sort_by=popularity.desc&api_key=${API_KEY}`,
-  search: (query) => `https://api.themoviedb.org/3/search/movie?query=${encodeURIComponent(query)}&api_key=${API_KEY}`,
+  nowPlaying: `https://api.themoviedb.org/3/discover/tv?include_adult=false&include_video=false&language=en-US&page=2&sort_by=popularity.desc&api_key=${API_KEY}`,
+  topRated: `https://api.themoviedb.org/3/discover/tv?include_adult=false&include_video=false&language=en-US&page=3&sort_by=vote_average.desc&without_genres=99,10755&vote_count.gte=200&api_key=${API_KEY}`,
+  popular: `https://api.themoviedb.org/3/discover/tv?include_adult=false&include_video=false&language=en-US&page=2&sort_by=popularity.desc&api_key=${API_KEY}`,
+  search: (query) => `https://api.themoviedb.org/3/search/tv?query=${encodeURIComponent(query)}&api_key=${API_KEY}`,
 };
 
 interface Movie {
   id: number;
-  title: string;
+  name: string;
   overview: string;
   poster_path: string;
   backdrop_path: string;
   vote_average: number;
-  release_date: string;
+  first_air_date: string;
 }
 
 
@@ -68,30 +68,30 @@ function NetflixClone() {
   const mockMovies = [
     {
       id: 1,
-      title: "The Shawshank Redemption",
+      name: "The Shawshank Redemption",
       overview: "Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency.",
       poster_path: "/q6y0Go1G1c4L8WKQ0YW0aXbfVkB.jpg",
       backdrop_path: "/iNh3BivHyg5sQRPP1KOkzguEX0H.jpg",
       vote_average: 9.3,
-      release_date: "1994-09-23"
+      first_air_date: "1994-09-23"
     },
     {
       id: 2,
-      title: "The Godfather",
+      name: "The Godfather",
       overview: "The aging patriarch of an organized crime dynasty transfers control of his clandestine empire to his reluctant son.",
       poster_path: "/3bhkrj58Vtu7enYsRolD1fZdja1.jpg",
       backdrop_path: "/tmU7GeKVybMWFButWEGl2M4GeiP.jpg",
       vote_average: 9.2,
-      release_date: "1972-03-14"
+      first_air_date: "1972-03-14"
     },
     {
       id: 3,
-      title: "The Dark Knight",
+      name: "The Dark Knight",
       overview: "When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests.",
       poster_path: "/qJ2tW6WMUDux911r6m7haRef0WH.jpg",
       backdrop_path: "/ybHkyRU2PcqncrMoMYK2gYO7IE.jpg",
       vote_average: 9.0,
-      release_date: "2008-07-16"
+      first_air_date: "2008-07-16"
     }
   ];
 
@@ -156,7 +156,7 @@ function NetflixClone() {
         if (API_KEY === 'demo_key') {
           // Mock search with local data
           const filtered = mockMovies.filter(movie => 
-            movie.title.toLowerCase().includes(search.toLowerCase())
+            movie.name.toLowerCase().includes(search.toLowerCase())
           );
           setSearchResults(filtered);
         } else {
@@ -293,14 +293,14 @@ function NetflixClone() {
         {featuredMovie.backdrop_path && (
           <img
             src={`https://image.tmdb.org/t/p/original${featuredMovie.backdrop_path}`}
-            alt={featuredMovie.title}
+            alt={featuredMovie.name}
             className="absolute inset-0 w-full h-full object-cover"
           />
         )}
         
         <div className="relative z-20 flex flex-col justify-center h-full px-4 md:px-16 max-w-4xl">
           <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 leading-tight">
-            {featuredMovie.title}
+            {featuredMovie.name}
           </h1>
           <p className="text-lg md:text-xl text-gray-300 mb-8 max-w-2xl line-clamp-3">
             {featuredMovie.overview}
@@ -354,118 +354,18 @@ function NetflixClone() {
       
 
       <main className="">
-        {currentView === 'home' && (
-          <>
-            <HeroSection />
-            <div className="space-y-8 pb-20 px-4 md:px-8">
-              <Section title="Now Playing" movies={nowPlaying} loading={loading} />
-              <Section title="Top Rated" movies={topRated} loading={loading} />
-              <Section title="Popular" movies={popular} loading={loading} />
-            </div>
-          </>
-        )}
-
-        {currentView === 'search' && (
-          <div className="px-4 md:px-8 max-w-7xl mx-auto py-15">
-            <h1 className="text-2xl font-bold text-white mb-8">
-              {searchResults.length > 0 ? `Search Results for "${search}"` : 'Search'}
-            </h1>
-            {loading ? (
-              <div className="flex justify-center items-center h-64">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600"></div>
-              </div>
-            ) : searchResults.length > 0 ? (
-              <div className="grid sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5 gap-20">
-                {searchResults.map(movie => (
-                  <MovieCard
-                    key={movie.id}
-                    movie={movie}
-                    watchlist={watchlist}
-                    favorites={favorites}
-                    setWatchlist={setWatchlist}
-                    setFavorites={setFavorites}
-                    session={session}
-                    setSelectedMovie={openMovieModal}
-                  />
-                ))}
-              </div>
-            ) : search ? (
-              <div className="text-center text-gray-400 mt-16">
-                <Search className="w-16 h-16 mx-auto mb-4 opacity-50" />
-                <p className="text-xl">No results found for "{search}"</p>
-                <p className="mt-2">Try different keywords</p>
-              </div>
-            ) : (
-              <div className="text-center text-gray-400 mt-16">
-                <Search className="w-16 h-16 mx-auto mb-4 opacity-50" />
-                <p className="text-xl">Search for movies, TV shows, and more</p>
-              </div>
-            )}
+          <HeroSection />
+          <div className="space-y-8 pb-20 px-4 md:px-8">
+            <Section title="Now Playing" movies={nowPlaying} loading={loading} />
+            <Section title="Top Rated" movies={topRated} loading={loading} />
+            <Section title="Popular" movies={popular} loading={loading} />
           </div>
-        )}
-
-        {currentView === 'watchlist' && (
-          <div className="px-4 md:px-8 max-w-7xl mx-auto  py-15">
-            <h1 className="text-2xl font-bold text-white mb-8">My Watchlist</h1>
-            {watchlist.length > 0 ? (
-              <div className="grid sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5 gap-20">
-                {watchlist.map(movie => (
-                  <MovieCard
-                    key={movie.id}
-                    movie={movie}
-                    watchlist={watchlist}
-                    favorites={favorites}
-                    setWatchlist={setWatchlist}
-                    setFavorites={setFavorites}
-                    session={session}
-                    setSelectedMovie={openMovieModal}
-                  />
-                ))}
-              </div>
-            ) : (
-              <div className="text-center text-gray-400 mt-16">
-                <Bookmark className="w-16 h-16 mx-auto mb-4 opacity-50" />
-                <p className="text-xl">Your watchlist is empty</p>
-                <p className="mt-2">Add movies to watch them later</p>
-              </div>
-            )}
-          </div>
-        )}
-
-        {currentView === 'favorites' && (
-          <div className="px-4 md:px-8 max-w-7xl mx-auto py-15">
-            <h1 className="text-2xl font-bold text-white mb-8">My Favorites</h1>
-            {favorites.length > 0 ? (
-              <div className="grid sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5 gap-20">
-                {favorites.map(movie => (
-                  <MovieCard
-                    key={movie.id}
-                    movie={movie}
-                    watchlist={watchlist}
-                    favorites={favorites}
-                    setWatchlist={setWatchlist}
-                    setFavorites={setFavorites}
-                    session={session}
-                    setSelectedMovie={openMovieModal}
-                  />
-                ))}
-              </div>
-            ) : (
-              <div className="text-center text-gray-400 mt-16">
-                <Heart className="w-16 h-16 mx-auto mb-4 opacity-50" />
-                <p className="text-xl">No favorites yet</p>
-                <p className="mt-2">Heart movies to add them to your favorites</p>
-              </div>
-            )}
-          </div>
-        )}
       </main>
-    {/* {isClient && MovieModalComponent} */}
     </div>
   );
 };
 
-import ProtectedRoute from './ProtectedRoute';
+import ProtectedRoute from '../ProtectedRoute';
 
 export default function ProtectedHomePage() {
   return (

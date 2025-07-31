@@ -1,0 +1,50 @@
+// Prisma schema for Netflix Clone
+// SQLite for local development
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String?
+  image     String?
+  watchlist Watchlist[]
+  favorites Favorite[]
+}
+
+model Movie {
+  id        String   @id
+  title     String
+  poster    String?
+  overview  String?
+  release   String?
+  // Add more fields as needed
+  watchlist Watchlist[]
+  favorites Favorite[]
+}
+
+model Watchlist {
+  id      String  @id @default(cuid())
+  user    User    @relation(fields: [userId], references: [id])
+  userId  String
+  movie   Movie   @relation(fields: [movieId], references: [id])
+  movieId String
+  createdAt DateTime @default(now())
+}
+
+model Favorite {
+  id      String  @id @default(cuid())
+  user    User    @relation(fields: [userId], references: [id])
+  userId  String
+  movie   Movie   @relation(fields: [movieId], references: [id])
+  movieId String
+  createdAt DateTime @default(now())
+}
